@@ -1,0 +1,24 @@
+<html>
+    <head>
+        <title>{{title}}</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='home_page.css') }}">
+    </head>
+    <body>
+        <div id="loader"></div>
+        <h1>ITS Database Companion</h1>
+        <form method="post" action="articles">
+            <p><label for="user input">Ask me anything</label></p>
+            <textarea id= "user input" name="user input" rows="4" cols="50" placeholder="Click Enter to submit" required></textarea>
+            <br>
+            <input id="submit" type="submit" value="Submit">
+        </form>    
+        <script>
+            document.getElementById('user input').addEventListener('keypress', function(event) {
+                if (event.keyCode == 13 || event.key === "Enter") {
+                    event.preventDefault();
+                    document.getElementById("submit").click()
+                }
+            });
+        </script>
+    <body>
+</html>
