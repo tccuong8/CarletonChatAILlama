@@ -11,8 +11,21 @@
 # This is for the  implementation of the llama instead of ChatGPT 3.5
 # "https://vilsonrodrigues.medium.com/run-llama-2-models-in-a-colab-instance-using-ggml-and-ctransformers-41c1d6f0e6ad"
 
+"""
+git pull
+git add ...
+git commit -m "<message>"
+git push origin <branch name>
+git fetch
+	+ When other people delete branches, and you want for the same branch to also be deleted on your side.
+ 
+SOURCE: https://platform.openai.com/docs/api-reference/introduction?lang=python
+"""
+
+
 import openai, os, tiktoken
 from openai import OpenAI
+from pgpt_python.client import PrivateGPTApi # type: ignore
 
 def num_tokens_from_messages(messages, model="TheBloke/Llama-2-13B-chat-GGML"):
   """Returns the number of tokens used by a list of messages."""
