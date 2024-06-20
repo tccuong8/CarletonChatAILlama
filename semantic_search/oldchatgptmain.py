@@ -22,8 +22,10 @@ git fetch
 SOURCE: https://platform.openai.com/docs/api-reference/introduction?lang=python
 """
 
+# NOTE: THIS BACKUP WAS MADE AFTER SOME WORKS HAS BEEN DONE ON THE MAINLLAMA.PY FILE, SO THE IMPORTS ARE A BIT WRONG
 
-# import tiktoken
+
+# import tiktoken 
 import os, sys
 
 sys.path.insert(0, "c:/users/tranc2/appdata/local/programs/python/python312/lib/site-packages")
