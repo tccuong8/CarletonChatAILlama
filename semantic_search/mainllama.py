@@ -25,9 +25,7 @@ SOURCE: https://platform.openai.com/docs/api-reference/introduction?lang=python
 
 # import tiktoken
 import os, sys
-
 sys.path.insert(0, "c:/users/tranc2/appdata/local/programs/python/python312/lib/site-packages")
-
 import pgpt_python, tiktoken # type: ignore
 from pgpt_python.client import PrivateGPTApi # type: ignore
 
@@ -51,89 +49,13 @@ def num_tokens_from_messages(messages, model="TheBloke/Llama-2-13B-chat-GGML"):
       raise NotImplementedError(f"""num_tokens_from_messages() is not presently implemented for model {model}.
 #   See https://github.com/openai/openai-python/blob/main/chatml.md for information on how messages are converted to tokens.""")
 
-
-try: # For ai_chat_bot.py access
-  with open("semantic_search\\api_key.env", "r") as file:
-      api_key=file.read()
-except: 
-  with open("api_key.env", "r") as file:
-      api_key=file.read()
-
-client = OpenAI(
-    api_key=api_key
-    # api_key=config("OPENAI_API_KEY") #Old code, in case new is buggy
-)
+client = PrivateGPTApi(base_url="http://localhost:8001")
 
 debug_mode = False
-gpt_model = "gpt-3.5-turbo-1106"
-
-ids = {
-	"assistant": "asst_dxT9wjMwRt6XPzeo3tu7kTtT",
-	"thread": "thread_DZCqbmdlOSvo2IZLtMYMHaUc",
-	"messages": [
-    "msg_jowRdIYlCnIKQO783x4zq6aG"
-  ],
-	"run": "run_5TafLs45ecJRlRx9I3wVEXCA",
-  "files": [
-    "file-l5xefGTETTbM3yLc9scCDiGq", #main-categories
-    "file-jPJPAsBEOW1t59fYiS3wBKve", #articles
-    "file-HYnTIkjbJYqKzCS6RYPf0kJD", #sub-categories
-    "file-G4NlBi7IeFdp1qYV9fpOu0hy", #Popular Tags
-    "file-Aim7diitivcZ8jW0IazzobyP"  #article text no newline
-  ],
-  "chat_completions" : {
-    
-  }
-}
-
 
 gpt_instructions="""TDX assistant will only answer questions using the new data we have provided. It will never use training data from OpenAI or anything else that we didn't provide to it. If there are any confusions, TDX assistant will ask the user for more clarifying questions instead of crashing. TDX assistant will use these plain texts to answer user questions."""
 
 all_messages=[{"role": "system", "content": gpt_instructions}]
-
-
-for file_id in ids["files"]:
-  assistant_file = client.beta.assistants.files.create(
-    assistant_id=ids["assistant"],
-    file_id=file_id
-  )
-  
-  if debug_mode: 
-    print(assistant_file)
-    print()
-
-
-assistant_files = client.beta.assistants.files.list(
-  assistant_id=ids["assistant"]
-)
-
-
-my_assistant = client.beta.assistants.retrieve(ids["assistant"])
-
-
-# my_thread = client.beta.threads.create() 
-my_thread = client.beta.threads.retrieve(ids["thread"])
-
-
-# message = client.beta.threads.messages.create(
-#   ids["thread"],
-#   role="user",
-#   content="",
-# )
-message = client.beta.threads.messages.retrieve(
-  message_id=ids["messages"][0],
-  thread_id=ids["thread"],
-)
-
-
-# run = client.beta.threads.runs.create(
-#   thread_id=ids["thread"],
-#   assistant_id=ids["assistant"]
-# )
-run = client.beta.threads.runs.retrieve(
-  thread_id=ids["thread"],
-  run_id=ids["run"]
-)
 
 
 def chat(all_messages, new_prompt):
@@ -174,61 +96,10 @@ if debug_mode:
   print("Client model:")
   print(client.models.list())
   print("Client model concluded")
-  
-  print("Files list:")
-  print(assistant_files)
-  print()
-  
-  print("My Assistant:")
-  print(my_assistant)
-  print()
-  
-  print("My Thread:")
-  print(my_thread)
-  print()
-  
-  print("Message:")
-  print(message)
-  print()
-  
-  print("Run:")
-  print(run)
-  print()
-  
-  print("Chat Completions:")
-  print(ids["chat_completions"])
-  print()
 
   print("All messages:")
   for thing in all_messages:
     print(thing)
   print()
 
-
-
-"""ChatCompletion Object structure:
-ChatCompletion(
-  id='chatcmpl-8VlW430CEYaeFcA0q9Qgqblz3dQsL', 
-  choices=[
-    Choice(
-      finish_reason='stop', 
-      index=0, 
-      message=ChatCompletionMessage(
-        content="I'm here to help with your questions! What do you need assistance with today?", 
-        role='assistant', 
-        function_call=None, 
-        tool_calls=None
-      )
-    )
-  ], 
-  created=1702581512, 
-  model='gpt-3.5-turbo-1106', 
-  object='chat.completion', 
-  system_fingerprint='fp_f3efa6edfc', 
-  usage=CompletionUsage(
-    completion_tokens=17, 
-    prompt_tokens=110, 
-    total_tokens=127
-  )
-)"""
 

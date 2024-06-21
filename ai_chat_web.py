@@ -1,5 +1,7 @@
+import os, sys
+sys.path.insert(0, "c:/users/tranc2/appdata/local/programs/python/python312/lib/site-packages")
 import optparse
-from flask import Flask, render_template, request, Response
+from flask import Flask, render_template, request, Response # type: ignore
 from semantic_search import main, create_embedding
 import time
 
