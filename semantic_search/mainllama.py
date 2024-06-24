@@ -22,7 +22,6 @@ git fetch
 SOURCE: https://platform.openai.com/docs/api-reference/introduction?lang=python
 """
 
-
 # import tiktoken
 import os, sys
 sys.path.insert(0, "c:/users/tranc2/appdata/local/programs/python/python312/lib/site-packages")
@@ -49,20 +48,25 @@ def num_tokens_from_messages(messages, model="TheBloke/Llama-2-13B-chat-GGML"):
       raise NotImplementedError(f"""num_tokens_from_messages() is not presently implemented for model {model}.
 #   See https://github.com/openai/openai-python/blob/main/chatml.md for information on how messages are converted to tokens.""")
 
+
 client = PrivateGPTApi(base_url="http://localhost:8001")
 
 debug_mode = False
 
+gpt_model = "gpt-3.5-turbo-1106" #replace this with the model we want to have.
+
 gpt_instructions="""TDX assistant will only answer questions using the new data we have provided. It will never use training data from OpenAI or anything else that we didn't provide to it. If there are any confusions, TDX assistant will ask the user for more clarifying questions instead of crashing. TDX assistant will use these plain texts to answer user questions."""
 
 all_messages=[{"role": "system", "content": gpt_instructions}]
+
+print(client.health.health())
 
 
 def chat(all_messages, new_prompt):
   all_messages.append({"role": "user", "content": new_prompt}) #Add user prompt 
   # Call the API for a new completion
   response = client.chat.completions.create(
-    model=gpt_model,
+    model= gpt_model,
     messages=all_messages,
   )
   # Cache the new response with its ID

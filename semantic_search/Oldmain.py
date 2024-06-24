@@ -10,7 +10,7 @@ SOURCE: https://platform.openai.com/docs/api-reference/introduction?lang=python
 """
 
 
-# import openai, os, tiktoken
+import openai, os, tiktoken
 from pgpt_python.client import PrivateGPTApi
 from openai import OpenAI
 
